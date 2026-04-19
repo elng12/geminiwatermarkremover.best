@@ -36,15 +36,39 @@ npm run build
 
 Static export files are generated into `out/`.
 
+## Smoke test
+
+```bash
+npm run smoke
+```
+
+## Browser E2E
+
+```bash
+npm run e2e
+```
+
+## Full check
+
+```bash
+npm run check
+```
+
+If Playwright cannot find a local browser, run this once:
+
+```bash
+npx playwright install chromium
+```
+
 ## Project structure
 
 ```text
 app/                  Next.js routes and metadata
 components/           Shared React components
 docs/                 Product, copy, and design documentation
-lib/                  Helpers for legacy HTML content
+lib/                  Shared site config and content
 public/               Demo images, OG image, browser runtime assets
-scripts/              Build support scripts
+scripts/              Build support and browser test scripts
 server/               Local preview utilities
 src/                  Legacy browser runtime and styles
 ```
@@ -54,3 +78,4 @@ src/                  Legacy browser runtime and styles
 - Image cleanup runs locally in the browser.
 - The app does not upload user images for processing in v1.
 - Search Console verification can be provided with `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION`.
+- Canonical, Open Graph, `robots.txt`, and `sitemap.xml` use `NEXT_PUBLIC_SITE_URL` (or `SITE_URL`) at build time.

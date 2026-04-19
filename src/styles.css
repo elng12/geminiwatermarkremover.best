@@ -216,7 +216,7 @@ button {
 .mini-tag {
   padding: 4px 8px;
   border-radius: 8px;
-  background: #7c83f6;
+  background: #4338ca;
   color: #fff;
   font-size: 0.5rem;
   font-weight: 700;
@@ -437,7 +437,6 @@ button {
 
 .trust-signal-grid,
 .example-gallery-grid,
-.proof-note-grid,
 .privacy-use-grid {
   display: grid;
   gap: 20px;
@@ -449,7 +448,6 @@ button {
 
 .trust-signal-card,
 .example-demo-card,
-.proof-note-card,
 .privacy-use-card {
   padding: 22px;
   background: rgba(255, 255, 255, 0.92);
@@ -459,7 +457,6 @@ button {
 }
 
 .trust-signal-card,
-.proof-note-card,
 .privacy-use-card {
   display: grid;
   gap: 12px;
@@ -467,14 +464,12 @@ button {
 }
 
 .trust-signal-card p,
-.proof-note-card p,
 .privacy-use-card p {
   margin: 0;
   color: var(--text-muted);
   line-height: 1.62;
 }
 
-.proof-note-card h3,
 .privacy-use-card h3,
 .example-demo-body h3 {
   margin: 0;
@@ -529,19 +524,6 @@ button {
 .example-demo-button {
   width: fit-content;
   min-width: 172px;
-}
-
-.proof-panel {
-  display: grid;
-  gap: 20px;
-}
-
-.proof-compare-slider {
-  min-height: 520px;
-}
-
-.proof-note-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .privacy-use-grid {
@@ -1087,6 +1069,12 @@ button {
   opacity: 0;
 }
 
+.compare-slider:focus-visible,
+.selection-surface:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.32);
+  outline-offset: 4px;
+}
+
 .compare-label {
   position: absolute;
   top: 14px;
@@ -1129,11 +1117,13 @@ button {
   top: 18px;
   left: 18px;
   z-index: 1;
+  max-width: calc(100% - 36px);
   padding: 10px 14px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.9);
   font-size: 0.82rem;
   font-weight: 700;
+  line-height: 1.4;
 }
 
 .selection-box {
@@ -1791,7 +1781,6 @@ button {
   .limits-grid,
   .trust-signal-grid,
   .example-gallery-grid,
-  .proof-note-grid,
   .privacy-use-grid {
     grid-template-columns: 1fr;
   }
@@ -1979,7 +1968,6 @@ button {
 
   .example-demo-card,
   .trust-signal-card,
-  .proof-note-card,
   .privacy-use-card {
     padding: 18px;
     border-radius: 20px;
@@ -1991,10 +1979,6 @@ button {
 
   .example-demo-button {
     width: 100%;
-  }
-
-  .proof-compare-slider {
-    min-height: 420px;
   }
 
   .results-mobile-hint {

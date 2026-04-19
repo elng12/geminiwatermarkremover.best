@@ -52,7 +52,6 @@ const fileInput = document.getElementById("file-input")
 const heroSection = document.getElementById("top")
 const toolSection = document.getElementById("tool")
 const heroUploadButton = document.getElementById("hero-upload-button")
-const midCtaUploadButton = document.getElementById("mid-cta-upload-button")
 const emptyDropzone = document.getElementById("empty-dropzone")
 const uploadFeedback = document.getElementById("upload-feedback")
 const processingImage = document.getElementById("processing-image")
@@ -62,8 +61,6 @@ const afterImage = document.getElementById("after-image")
 const successMeta = document.getElementById("success-meta")
 const downloadButton = document.getElementById("download-button")
 const resetButton = document.getElementById("reset-button")
-const successLooksGoodButton = document.getElementById("success-looks-good-button")
-const successNeedsHelpButton = document.getElementById("success-needs-help-button")
 const missImage = document.getElementById("miss-image")
 const missMessage = document.getElementById("miss-message")
 const manualModeButton = document.getElementById("manual-mode-button")
@@ -76,10 +73,7 @@ const applyManualButton = document.getElementById("apply-manual-button")
 const retryAutoButton = document.getElementById("retry-auto-button")
 const compareSlider = document.getElementById("compare-slider")
 const compareHandle = document.getElementById("compare-handle")
-const proofCompareSlider = document.getElementById("proof-compare-slider")
-const proofCompareHandle = document.getElementById("proof-compare-handle")
 const demoButtons = Array.from(document.querySelectorAll("[data-demo-src]"))
-const tryAdvancedButton = document.getElementById("try-advanced-button")
 const missAdvancedButton = document.getElementById("miss-advanced-button")
 const manualAdvancedButton = document.getElementById("manual-advanced-button")
 
@@ -106,6 +100,10 @@ const manualDrag = {
 function updateSliderPosition(slider, handle, fraction) {
   const pct = clamp(fraction * 100, 0, 100)
   const afterLayer = slider?.querySelector(".compare-slider-after")
+  if (slider) {
+    slider.dataset.compareFraction = String(pct / 100)
+    slider.setAttribute("aria-valuenow", String(Math.round(pct)))
+  }
   if (afterLayer) {
     afterLayer.style.clipPath = `inset(0 0 0 ${pct}%)`
   }
@@ -118,6 +116,11 @@ function sliderPointerToFraction(slider, event) {
   if (!slider) return 0.5
   const rect = slider.getBoundingClientRect()
   return clamp((event.clientX - rect.left) / rect.width, 0, 1)
+}
+
+function getSliderFraction(slider) {
+  const fraction = Number(slider?.dataset.compareFraction)
+  return Number.isFinite(fraction) ? clamp(fraction, 0, 1) : 0.5
 }
 
 function bindCompareSliderElement(slider, handle) {
@@ -135,6 +138,7 @@ function bindCompareSliderElement(slider, handle) {
     sliderDrag.pointerId = event.pointerId
     slider.setPointerCapture(event.pointerId)
     slider.classList.add("is-dragging")
+    slider.focus()
     updateSliderPosition(slider, handle, sliderPointerToFraction(slider, event))
   })
 
@@ -153,11 +157,30 @@ function bindCompareSliderElement(slider, handle) {
 
   slider.addEventListener("pointerup", endSliderDrag)
   slider.addEventListener("pointercancel", endSliderDrag)
+
+  slider.addEventListener("keydown", (event) => {
+    let nextFraction = getSliderFraction(slider)
+    const step = event.shiftKey ? 0.1 : 0.05
+
+    if (event.key === "ArrowLeft") {
+      nextFraction -= step
+    } else if (event.key === "ArrowRight") {
+      nextFraction += step
+    } else if (event.key === "Home") {
+      nextFraction = 0
+    } else if (event.key === "End") {
+      nextFraction = 1
+    } else {
+      return
+    }
+
+    event.preventDefault()
+    updateSliderPosition(slider, handle, nextFraction)
+  })
 }
 
 function bindCompareSliders() {
   bindCompareSliderElement(compareSlider, compareHandle)
-  bindCompareSliderElement(proofCompareSlider, proofCompareHandle)
 }
 
 function mountToolWorkspaceInHero() {
@@ -218,6 +241,10 @@ function setManualProcessing(isProcessing) {
   if (retryAutoButton) {
     retryAutoButton.disabled = isProcessing
   }
+
+  if (manualAdvancedButton) {
+    manualAdvancedButton.disabled = isProcessing
+  }
 }
 
 function revokeObjectUrl(url) {
@@ -227,6 +254,7 @@ function revokeObjectUrl(url) {
 }
 
 function clearWorkingAssets() {
+  cancelProcessingSession()
   revokeObjectUrl(appState.sourceUrl)
   revokeObjectUrl(appState.resultUrl)
   appState.sourceFile = null
@@ -260,8 +288,17 @@ function fileBaseName(fileName) {
   return fileName.replace(/\.[^/.]+$/, "") || "cleaned-image"
 }
 
-function buildDownloadName(sourceName) {
-  return `${fileBaseName(sourceName)}-clean.png`
+function fileExtensionForType(type, sourceName = "") {
+  if (type === "image/jpeg") return ".jpg"
+  if (type === "image/webp") return ".webp"
+  if (type === "image/png") return ".png"
+
+  const sourceExtension = sourceName.match(/\.[^/.]+$/)?.[0]
+  return sourceExtension ? sourceExtension.toLowerCase() : ".png"
+}
+
+function buildDownloadName(sourceName, type = "image/png") {
+  return `${fileBaseName(sourceName)}-clean${fileExtensionForType(type, sourceName)}`
 }
 
 function getImageDimensions(image) {
@@ -585,26 +622,22 @@ function manualFallbackMessage(meta) {
 
 function successMessage(meta, mode) {
   if (mode === "local-repair") {
-    return "Local repair preview is ready. The remaining mark was filled from nearby background pixels; review the area before downloading."
+    return "Local cleanup is ready. The remaining mark was blended from nearby pixels, so check the lower-right area before downloading."
   }
 
   if (mode === "local-repair-warning") {
-    return "Local repair preview is ready, but this image may still show slight residue. Try a tighter manual square if you want one more local pass."
+    return "Cleanup is complete. Check the lower-right corner before downloading. A slight residue may still remain on harder images."
   }
 
   if (mode === "manual-warning") {
-    return "Manual repair preview is ready. This image may still show residue because the local cleanup has reached its limit."
+    return "Manual cleanup is complete. Check the selected area before downloading. If residue is still visible, tighten the selection and try again."
   }
 
   if (mode === "advanced-repair") {
-    return "Advanced mathematical template removal applied. The visible corners use pixel-perfect inverse blending. Please review!"
+    return "Advanced cleanup is ready. Check the lower-right corner before downloading."
   }
 
-  const pieces = [
-    mode === "manual"
-      ? "Second-pass preview is ready."
-      : "Review this cleanup preview before downloading.",
-  ]
+  const pieces = [mode === "manual" ? "Manual cleanup is ready." : "Automatic cleanup is ready."]
 
   if (meta?.position?.width) {
     pieces.push(`Target area: ${meta.position.width}px.`)
@@ -751,16 +784,21 @@ function routeToManualRepair(meta, selection, message = null) {
   )
   setNote(manualSelectionNote, message || manualFallbackMessage(meta), "error")
   setActiveState("manual", { scroll: true })
+  focusManualSurface()
 }
 
 async function finalizeSuccess(canvas, meta, mode) {
-  const processedBlob = await canvasToBlob(canvas, getPreferredOutputType())
+  const outputType = getPreferredOutputType()
+  const processedBlob = await canvasToBlob(canvas, outputType)
   const processedUrl = URL.createObjectURL(processedBlob)
 
   revokeObjectUrl(appState.resultUrl)
   appState.resultBlob = processedBlob
   appState.resultUrl = processedUrl
-  appState.resultFileName = buildDownloadName(appState.sourceFile?.name || "cleaned-image")
+  appState.resultFileName = buildDownloadName(
+    appState.sourceFile?.name || "cleaned-image",
+    outputType
+  )
   appState.meta = meta
   appState.resultMode = mode
 
@@ -871,6 +909,31 @@ function buildManualSelection(startPoint, endPoint) {
   const y = deltaY >= 0 ? startPoint.y : startPoint.y - size
 
   return normalizeSquareSelection({ x, y, size })
+}
+
+function moveManualSelection(selection, deltaX, deltaY) {
+  return normalizeSquareSelection({
+    x: selection.x + deltaX,
+    y: selection.y + deltaY,
+    size: selection.size,
+  })
+}
+
+function resizeManualSelection(selection, deltaSize) {
+  const nextSize = selection.size + deltaSize
+  const offset = (nextSize - selection.size) / 2
+
+  return normalizeSquareSelection({
+    x: selection.x - offset,
+    y: selection.y - offset,
+    size: nextSize,
+  })
+}
+
+function focusManualSurface() {
+  requestAnimationFrame(() => {
+    manualSurface?.focus()
+  })
 }
 
 function eventToImagePoint(event) {
@@ -1205,6 +1268,7 @@ async function runManualCleanup() {
       },
       maxPasses: 4,
     })
+    if (signal.aborted) return
 
     const manualAlphaMap = getManualAlphaMap(selection.size)
     context.putImageData(result.imageData, 0, 0)
@@ -1223,6 +1287,7 @@ async function runManualCleanup() {
 
     if (shouldEscalateCleanup(manualEvaluation, "manual")) {
       const repairedImageData = applyLocalRepairFill(result.imageData, selection, manualAlphaMap)
+      if (signal.aborted) return
       context.putImageData(repairedImageData, 0, 0)
 
       const repairedMeta = {
@@ -1238,6 +1303,7 @@ async function runManualCleanup() {
       return
     }
 
+    if (signal.aborted) return
     await finalizeSuccess(
       canvas,
       manualMeta,
@@ -1309,7 +1375,7 @@ async function adoptSourceFile(file, options = {}) {
   appState.sourceUrl = objectUrl
   appState.resultBlob = null
   appState.resultUrl = ""
-  appState.resultFileName = buildDownloadName(sourceLabel)
+  appState.resultFileName = buildDownloadName(sourceLabel, file.type || "image/png")
   appState.meta = null
   appState.manualSelection = getDefaultManualSelection()
 
@@ -1351,7 +1417,9 @@ function downloadResult() {
 
   const anchor = document.createElement("a")
   anchor.href = appState.resultUrl
-  anchor.download = appState.resultFileName || buildDownloadName("cleaned-image")
+  anchor.download =
+    appState.resultFileName ||
+    buildDownloadName("cleaned-image", appState.resultBlob.type || "image/png")
   anchor.click()
 }
 
@@ -1449,6 +1517,47 @@ function bindManualSelection() {
 
   manualSurface.addEventListener("pointerup", endDrag)
   manualSurface.addEventListener("pointercancel", endDrag)
+  manualSurface.addEventListener("keydown", (event) => {
+    if (!appState.sourceImage) return
+
+    const selection =
+      normalizeSquareSelection(appState.manualSelection) || getDefaultManualSelection()
+
+    if (!selection) return
+
+    let nextSelection = null
+    const moveStep = event.altKey ? 2 : 8
+    const resizeStep = event.altKey ? 6 : 16
+
+    if (event.shiftKey) {
+      if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+        nextSelection = resizeManualSelection(selection, -resizeStep)
+      } else if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+        nextSelection = resizeManualSelection(selection, resizeStep)
+      }
+    } else if (event.key === "ArrowLeft") {
+      nextSelection = moveManualSelection(selection, -moveStep, 0)
+    } else if (event.key === "ArrowRight") {
+      nextSelection = moveManualSelection(selection, moveStep, 0)
+    } else if (event.key === "ArrowUp") {
+      nextSelection = moveManualSelection(selection, 0, -moveStep)
+    } else if (event.key === "ArrowDown") {
+      nextSelection = moveManualSelection(selection, 0, moveStep)
+    } else if (event.key === "Home") {
+      nextSelection = getDefaultManualSelection()
+    }
+
+    if (!nextSelection) return
+
+    event.preventDefault()
+    appState.manualSelection = nextSelection
+    renderManualSelection()
+    setNote(
+      manualSelectionNote,
+      `Selected ${nextSelection.size}px square. Use arrow keys to refine, then apply cleanup.`,
+      "muted"
+    )
+  })
 }
 
 function bindEvents() {
@@ -1457,7 +1566,6 @@ function bindEvents() {
   })
 
   heroUploadButton?.addEventListener("click", chooseInputFile)
-  midCtaUploadButton?.addEventListener("click", chooseInputFile)
   demoButtons.forEach((button) => {
     button.addEventListener("click", () => {
       const demoSrc = button.dataset.demoSrc
@@ -1486,24 +1594,9 @@ function bindEvents() {
       normalizeSquareSelection(appState.manualSelection) || getDefaultManualSelection()
     renderManualSelection()
     setActiveState("manual")
+    focusManualSurface()
   })
   applyManualButton?.addEventListener("click", runManualCleanup)
-  successLooksGoodButton?.addEventListener("click", () => {
-    setNote(successMeta, "Looks ready. Download when you are comfortable with the preview.", "success")
-  })
-  successNeedsHelpButton?.addEventListener("click", () => {
-    const selection =
-      normalizeSquareSelection(appState.manualSelection) ||
-      getSuggestedManualSelection(appState.meta) ||
-      getDefaultManualSelection()
-    routeToManualRepair(
-      appState.meta,
-      selection,
-      "Draw a tight square around the remaining visible mark, then apply a closer repair pass."
-    )
-  })
-
-  tryAdvancedButton?.addEventListener("click", runAdvancedCleanup)
   missAdvancedButton?.addEventListener("click", runAdvancedCleanup)
   manualAdvancedButton?.addEventListener("click", runAdvancedCleanup)
 

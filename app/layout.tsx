@@ -1,23 +1,26 @@
 import type { Metadata } from "next"
-import { Plus_Jakarta_Sans, Sora } from "next/font/google"
+import localFont from "next/font/local"
+import { siteMetadataBase } from "../lib/site-config"
 import "./globals.css"
 
 const googleSiteVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
 
-const plusJakarta = Plus_Jakarta_Sans({
-  subsets: ["latin"],
+const plusJakarta = localFont({
+  src: "./fonts/plus-jakarta-sans-latin.woff2",
+  weight: "200 800",
   variable: "--font-plus-jakarta",
   display: "swap",
 })
 
-const sora = Sora({
-  subsets: ["latin"],
+const sora = localFont({
+  src: "./fonts/sora-latin.woff2",
+  weight: "100 800",
   variable: "--font-sora",
   display: "swap",
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://geminiwatermarkremover.best"),
+  metadataBase: siteMetadataBase,
   verification: googleSiteVerification
     ? {
         google: googleSiteVerification,

@@ -7,7 +7,11 @@
     "prebuild": "node scripts/sync-legacy-runtime.mjs",
     "dev": "next dev --hostname 0.0.0.0 --port 3000",
     "build": "next build",
-    "preview": "npm run build && node server/preview-server.mjs"
+    "postbuild": "node scripts/finalize-export.mjs",
+    "preview": "npm run build && node server/preview-server.mjs",
+    "smoke": "npm run build && node scripts/smoke-test.mjs",
+    "e2e": "npm run build && node scripts/e2e-browser.mjs",
+    "check": "npm run build && node scripts/smoke-test.mjs && node scripts/e2e-browser.mjs"
   },
   "dependencies": {
     "next": "^16.2.4",
@@ -19,6 +23,7 @@
     "@types/node": "^25.6.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
+    "playwright": "^1.59.1",
     "tailwindcss": "^4.2.2",
     "typescript": "^6.0.3"
   }

@@ -19,7 +19,7 @@
 
 ### 首页 Description
 
-`Remove the visible watermark from Google Gemini AI generated images online for free. Lossless quality, runs 100% in your browser with no upload and no sign-up.`
+`Remove the visible watermark from Google Gemini AI generated images online for free. Runs 100% in your browser with no upload and no sign-up.`
 
 ### 首页 H1
 
@@ -33,7 +33,7 @@
 
 ### 主副标题
 
-`Losslessly remove the visible Gemini sparkle watermark and similar small corner marks from your AI generated images in seconds.`
+`Remove the visible Gemini sparkle watermark and similar small corner marks from your AI generated images in seconds.`
 
 ### 支撑文案
 
@@ -239,7 +239,7 @@
 
 ### Will the image lose quality (is it lossless)?
 
-`The tool processes only the marked area locally, keeping the rest of your original image intact and preserving its quality.`
+`The tool edits only the selected area locally and re-exports a cleaned copy for download. On JPG or WebP images, file quality or metadata may change slightly after export.`
 
 ## 页脚文案
 

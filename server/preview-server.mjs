@@ -1,13 +1,14 @@
 import { createReadStream, existsSync, statSync } from "node:fs"
 import { readFile } from "node:fs/promises"
 import { createServer } from "node:http"
-import { extname, join, normalize } from "node:path"
+import { extname, join, normalize, resolve, sep } from "node:path"
 import { fileURLToPath } from "node:url"
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url))
-const rootDir = normalize(join(__dirname, ".."))
-const outDir = join(rootDir, "out")
+const rootDir = resolve(normalize(join(__dirname, "..")))
+const outDir = resolve(rootDir, "out")
 const port = Number(process.env.PORT || 4173)
+const host = process.env.HOST || "127.0.0.1"
 
 const MIME_TYPES = {
   ".css": "text/css; charset=utf-8",
@@ -29,11 +30,11 @@ function safeResolve(pathname) {
   const decoded = decodeURIComponent(pathname)
   const trimmed = decoded.replace(/^\/+/, "")
   const normalized = normalize(trimmed)
-  return join(outDir, normalized)
+  return resolve(outDir, normalized)
 }
 
 function isInsideOut(filePath) {
-  return filePath.startsWith(outDir)
+  return filePath === outDir || filePath.startsWith(`${outDir}${sep}`)
 }
 
 function resolveExistingFile(filePath) {
@@ -105,6 +106,6 @@ const server = createServer(async (req, res) => {
   await serveStatic(req, res, url)
 })
 
-server.listen(port, "0.0.0.0", () => {
-  console.log(`Preview server running at http://0.0.0.0:${port}`)
+server.listen(port, host, () => {
+  console.log(`Preview server running at http://${host}:${port}`)
 })

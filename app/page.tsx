@@ -1,20 +1,23 @@
 import type { Metadata } from "next"
-import { LegacyToolPage } from "../components/legacy-tool-page"
-import { getBodyHtml, getDocumentMeta, getJsonLd } from "../lib/html-template"
+import { HomePageContent } from "../components/home-page-content"
+import siteContent from "../lib/site-content"
 
-const bodyHtml = getBodyHtml("index.html")
-const jsonLd = getJsonLd("index.html")
-const meta = getDocumentMeta("index.html")
+const { HOME_PAGE_DESCRIPTION, HOME_PAGE_JSONLD, HOME_PAGE_TITLE } =
+  siteContent as {
+    HOME_PAGE_DESCRIPTION: string
+    HOME_PAGE_JSONLD: Record<string, unknown>
+    HOME_PAGE_TITLE: string
+  }
 
 export const metadata: Metadata = {
-  title: meta.title,
-  description: meta.description,
+  title: HOME_PAGE_TITLE,
+  description: HOME_PAGE_DESCRIPTION,
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: meta.title,
-    description: meta.description,
+    title: HOME_PAGE_TITLE,
+    description: HOME_PAGE_DESCRIPTION,
     type: "website",
     url: "/",
     images: [
@@ -25,12 +28,21 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: meta.title,
-    description: meta.description,
+    title: HOME_PAGE_TITLE,
+    description: HOME_PAGE_DESCRIPTION,
     images: ["/og/og-home.png"],
   },
 }
 
 export default function HomePage() {
-  return <LegacyToolPage html={bodyHtml} jsonLd={jsonLd} />
+  return (
+    <>
+      <HomePageContent />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(HOME_PAGE_JSONLD) }}
+      />
+      <script type="module" src="/legacy/app.js" />
+    </>
+  )
 }
