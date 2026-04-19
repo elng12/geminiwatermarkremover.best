@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.next/
+out/
+.agent/
+.playwright-cli/
+.DS_Store
+*.log
+Homepage ! Desktop.png
+.env
+.env.*
+!.env.example

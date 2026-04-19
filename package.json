@@ -1,0 +1,25 @@
+{
+  "name": "geminiwatermarkremover.best",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "predev": "node scripts/sync-legacy-runtime.mjs",
+    "prebuild": "node scripts/sync-legacy-runtime.mjs",
+    "dev": "next dev --hostname 0.0.0.0 --port 3000",
+    "build": "next build",
+    "preview": "npm run build && node server/preview-server.mjs"
+  },
+  "dependencies": {
+    "next": "^16.2.4",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.2.2",
+    "@types/node": "^25.6.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "tailwindcss": "^4.2.2",
+    "typescript": "^6.0.3"
+  }
+}

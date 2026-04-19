@@ -1,0 +1,7 @@
+@import "tailwindcss";
+@import "../src/styles.css";
+
+:root {
+  --font-plus-jakarta: "Helvetica Neue", Arial, sans-serif;
+  --font-sora: "Helvetica Neue", Arial, sans-serif;
+}
