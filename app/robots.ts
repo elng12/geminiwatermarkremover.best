@@ -1,6 +1,5 @@
 import type { MetadataRoute } from "next"
-
-const siteUrl = "https://geminiwatermarkremover.best"
+import { siteUrl } from "../lib/site-config"
 
 export const dynamic = "force-static"
 
