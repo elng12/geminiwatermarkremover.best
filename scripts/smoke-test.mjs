@@ -28,8 +28,9 @@ const homeHtml = readOutput("index.html")
 const privacyHtml = readOutput("privacy-policy/index.html")
 const termsHtml = readOutput("terms-of-service/index.html")
 const trademarkHtml = readOutput("trademark-notice/index.html")
+const notFoundHtml = readOutput("404.html")
 const sitemapXml = readOutput("sitemap.xml")
-const legacyApp = readOutput("legacy/app.js")
+const legacyBootstrap = readOutput("legacy/bootstrap.js")
 
 expectIncludes(
   homeHtml,
@@ -53,8 +54,13 @@ expectIncludes(
 )
 expectIncludes(
   homeHtml,
+  '<script type="module" src="/legacy/bootstrap.js"></script>',
+  "Homepage is missing the legacy bootstrap script."
+)
+expectExcludes(
+  homeHtml,
   '<script type="module" src="/legacy/app.js"></script>',
-  "Homepage is missing the legacy runtime script."
+  "Homepage should not eagerly load the legacy runtime script."
 )
 expectExcludes(
   homeHtml,
@@ -81,15 +87,24 @@ expectExcludes(
   "self.__next_f.push",
   "Trademark notice page still contains Next flight payload data."
 )
+expectExcludes(
+  notFoundHtml,
+  "self.__next_f.push",
+  "404 page still contains Next flight payload data."
+)
+assert(
+  !existsSync(join(outDir, "_not-found")),
+  "Static export should not expose the internal _not-found route."
+)
 expectIncludes(
   sitemapXml,
   "/trademark-notice/",
   "Sitemap is missing the trademark notice route."
 )
 expectIncludes(
-  legacyApp,
-  "function fileExtensionForType",
-  "Legacy runtime was not synced with the filename extension fix."
+  legacyBootstrap,
+  "import(\"./app.js\")",
+  "Legacy bootstrap was not synced with the runtime loader."
 )
 
 console.log("Smoke test passed.")

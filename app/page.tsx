@@ -22,7 +22,10 @@ export const metadata: Metadata = {
     url: "/",
     images: [
       {
+        alt: "Gemini Watermark Remover Online preview",
+        height: 630,
         url: "/og/og-home.png",
+        width: 1200,
       },
     ],
   },
@@ -30,7 +33,12 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: HOME_PAGE_TITLE,
     description: HOME_PAGE_DESCRIPTION,
-    images: ["/og/og-home.png"],
+    images: [
+      {
+        alt: "Gemini Watermark Remover Online preview",
+        url: "/og/og-home.png",
+      },
+    ],
   },
 }
 
@@ -42,7 +50,7 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(HOME_PAGE_JSONLD) }}
       />
-      <script type="module" src="/legacy/app.js" />
+      <script type="module" src="/legacy/bootstrap.js" />
     </>
   )
 }

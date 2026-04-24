@@ -4,10 +4,12 @@ type DemoExample = {
   alt: string
   buttonLabel: string
   description: string
+  height: number
   imageLabel: string
   imageSrc: string
   sourceName: string
   title: string
+  width: number
 }
 
 type FaqItem = {
@@ -44,20 +46,24 @@ const demoExamples: DemoExample[] = [
     alt: "Example image with a visible Gemini sparkle watermark in the corner",
     buttonLabel: "Try this example",
     description: "A clear bottom-right Gemini-style sparkle mark on the original image.",
+    height: 404,
     imageLabel: "Visible sparkle cleanup",
     imageSrc: "/demo/demo-01-sparkle-before.png",
     sourceName: "demo-01-sparkle-before.png",
     title: "Standard corner sparkle",
+    width: 576,
   },
   {
     alt: "Compressed example image with the same visible Gemini-style sparkle watermark",
     buttonLabel: "Try this example",
     description:
       "A resized and compressed version of the same visible sparkle mark for a more realistic retry case.",
+    height: 337,
     imageLabel: "Compressed image retry",
     imageSrc: "/demo/demo-02-compressed-sparkle-before.webp",
     sourceName: "demo-02-compressed-sparkle-before.webp",
     title: "Lightly compressed sample",
+    width: 480,
   },
 ]
 
@@ -84,8 +90,8 @@ const privacyUseCards = [
 ]
 
 const footerProductItems = [
-  "Gemini Watermark Remover Online",
-  "Visible mark cleanup",
+  "Gemini Watermark Remover",
+  "Remove Gemini Watermark",
   "Local browser image tool",
   "No upload required",
 ]
@@ -114,16 +120,20 @@ export function HomePageContent() {
             type="file"
             accept="image/jpeg,image/png,image/webp"
             aria-label="Upload image file"
+            tabIndex={-1}
           />
-          <p className="eyebrow">Free in-browser tool for visible Gemini marks</p>
-          <h1>Gemini Watermark Remover Online</h1>
+          <p className="eyebrow">Free browser tool to remove Gemini watermark</p>
+          <h1>Gemini Watermark Remover</h1>
           <p className="hero-description">
-            Remove the visible Gemini sparkle watermark and similar small corner
-            marks from your image in seconds.
+            Remove Gemini watermark overlays and similar small corner marks from
+            your image in seconds.
           </p>
           <p className="hero-support">
-            Everything runs in your browser. No upload, no sign-up, and no
-            remote AI model required.
+            Everything runs in your browser.{" "}
+            <a className="inline-link" href="/privacy-policy/">
+              No upload
+            </a>
+            , no sign-up, and no remote AI model required.
           </p>
 
           <div
@@ -169,20 +179,22 @@ export function HomePageContent() {
             </div>
 
             <div className="hero-actions">
-              <button
+              <label
+                htmlFor="file-input"
                 id="hero-upload-button"
                 className="button button-primary button-dark"
-                type="button"
+                role="button"
+                tabIndex={0}
               >
                 <span id="hero-console-title">Upload an image</span>
-              </button>
+              </label>
               <p className="drag-hint">Or drag and drop files here</p>
               <div className="hero-meta">
                 <span>JPG, PNG, or WebP up to 10MB</span>
                 <span>Your image never leaves your browser.</span>
                 <span>
-                  Best for the visible Gemini sparkle watermark and similar
-                  small corner marks.
+                  Best when you need to remove Gemini watermark overlays and
+                  similar small corner marks.
                 </span>
               </div>
               <span
@@ -192,7 +204,7 @@ export function HomePageContent() {
                 aria-live="polite"
                 aria-atomic="true"
               >
-                Choose an image to start the browser-only cleanup.
+                Choose an image to remove Gemini watermark overlays locally.
               </span>
             </div>
           </div>
@@ -244,6 +256,10 @@ export function HomePageContent() {
                     className="result-static-card"
                     src={example.imageSrc}
                     alt={example.alt}
+                    width={example.width}
+                    height={example.height}
+                    loading="lazy"
+                    decoding="async"
                   />
                   <span className="example-demo-label">{example.imageLabel}</span>
                 </div>
@@ -267,14 +283,17 @@ export function HomePageContent() {
         <section
           className="section state-lab tool-workspace is-hidden"
           id="tool"
-          aria-label="Cleanup workspace"
+          aria-labelledby="tool-title"
         >
+          <h2 id="tool-title" className="sr-only">
+            Gemini watermark cleanup workspace
+          </h2>
           <div className="state-panels">
             <article className="state-panel" data-state-panel="processing">
               <div className="state-head">
                 <div>
                   <span className="state-brand">
-                    Gemini Watermark Remover Online
+                    Gemini Watermark Remover
                   </span>
                   <h3>Preparing your Gemini watermark preview</h3>
                   <p>
@@ -325,7 +344,7 @@ export function HomePageContent() {
               <div className="state-head">
                 <div>
                   <span className="state-brand">
-                    Gemini Watermark Remover Online
+                    Gemini Watermark Remover
                   </span>
                   <h3>Your Gemini watermark cleanup is ready</h3>
                   <p>
@@ -410,7 +429,7 @@ export function HomePageContent() {
               <div className="state-head">
                 <div>
                   <span className="state-brand">
-                    Gemini Watermark Remover Online
+                    Gemini Watermark Remover
                   </span>
                   <h3>We could not confidently find the Gemini watermark</h3>
                   <p>
@@ -478,7 +497,7 @@ export function HomePageContent() {
               <div className="state-head">
                 <div>
                   <span className="state-brand">
-                    Gemini Watermark Remover Online
+                    Gemini Watermark Remover
                   </span>
                   <h3>Select the Gemini watermark area</h3>
                   <p>
@@ -535,7 +554,7 @@ export function HomePageContent() {
                     </button>
                   </div>
                   <span className="state-meta state-meta-brand">
-                    Gemini Watermark Remover Online runs locally
+                    Gemini Watermark Remover runs locally
                   </span>
                   <span
                     id="manual-selection-note"
@@ -555,10 +574,10 @@ export function HomePageContent() {
         <section className="section" aria-labelledby="how-title">
           <div className="section-heading section-heading-centered">
             <p className="section-eyebrow">How it works</p>
-            <h2 id="how-title">How Gemini Watermark Remover Online works</h2>
+            <h2 id="how-title">How Gemini Watermark Remover works</h2>
             <p>
-              Upload an image, run a Gemini watermark pass, then review the
-              cleaned result before downloading.
+              Upload an image, remove Gemini watermark overlays locally, then
+              review the cleaned result before downloading.
             </p>
           </div>
 
@@ -574,8 +593,7 @@ export function HomePageContent() {
               <h3>Upload your image or try a sample</h3>
               <p>
                 Start with your own JPG, PNG, or WebP file, or load an example
-                first to see Gemini Watermark Remover Online on a corner
-                watermark.
+                first to see Gemini Watermark Remover on a corner watermark.
               </p>
             </article>
 
@@ -614,9 +632,9 @@ export function HomePageContent() {
               Visible Gemini-style marks on simple corner areas
             </h2>
             <p>
-              Gemini Watermark Remover Online is built for visible marks only.
-              It works best when the sparkle, logo, or icon stays small and easy
-              to review before download.
+              Gemini Watermark Remover is built for visible marks only. Use it
+              when you need to remove Gemini watermark overlays that stay small
+              and easy to review before download.
             </p>
           </div>
 
@@ -646,10 +664,10 @@ export function HomePageContent() {
         <section className="section faq-section" id="faq" aria-labelledby="faq-title">
           <div className="section-heading">
             <p className="section-eyebrow">FAQ</p>
-            <h2 id="faq-title">FAQ for Gemini Watermark Remover Online</h2>
+            <h2 id="faq-title">FAQ for Gemini Watermark Remover</h2>
             <p>
-              Focused answers about local processing, Gemini watermark removal,
-              manual mode, and hard limits.
+              Focused answers about how to remove Gemini watermark overlays,
+              local processing, manual mode, and hard limits.
             </p>
           </div>
 
@@ -690,7 +708,11 @@ export function HomePageContent() {
 
           <p className="privacy-use-disclaimer">
             Not affiliated with, endorsed by, or sponsored by Google LLC.
-            Gemini is a trademark of Google LLC.
+            Gemini is a trademark of Google LLC. See the{" "}
+            <a className="inline-link" href="/trademark-notice/">
+              trademark notice
+            </a>
+            .
           </p>
         </section>
       </main>
@@ -718,11 +740,11 @@ export function HomePageContent() {
                 </svg>
               </span>
               <div className="footer-brand-copy">
-                <h2 id="footer-brand-title">Gemini Watermark Remover Online</h2>
+                <h2 id="footer-brand-title">Gemini Watermark Remover</h2>
                 <p>
-                  A browser-only tool for the visible Gemini sparkle watermark
-                  and similar small corner marks. Upload, review, and download
-                  only when the result looks right.
+                  A browser-only tool to remove Gemini watermark overlays and
+                  similar small corner marks. Upload, review, and download only
+                  when the result looks right.
                 </p>
               </div>
             </div>

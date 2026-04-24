@@ -57,6 +57,14 @@ a {
   text-decoration: none;
 }
 
+.inline-link {
+  color: var(--brand-primary-dark);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
 button {
   font: inherit;
   appearance: none;
@@ -1758,6 +1766,7 @@ button {
 }
 
 .button:focus-visible,
+.inline-link:focus-visible,
 .state-tab:focus-visible,
 .chip:focus-visible,
 .topbar a:focus-visible,
@@ -1765,6 +1774,21 @@ button {
 .footer-link:focus-visible {
   outline: none;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.22);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 @media (max-width: 1080px) {

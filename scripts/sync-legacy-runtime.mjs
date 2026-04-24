@@ -5,6 +5,7 @@ const root = process.cwd()
 const legacyRoot = join(root, "public", "legacy")
 
 const copyTargets = [
+  ["src/bootstrap.js", "bootstrap.js"],
   ["src/app.js", "app.js"],
   ["src/processing-bridge.js", "processing-bridge.js"],
   ["src/watermark-templates.js", "watermark-templates.js"],

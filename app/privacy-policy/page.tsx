@@ -14,6 +14,31 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/privacy-policy/",
   },
+  openGraph: {
+    title,
+    description,
+    type: "article",
+    url: "/privacy-policy/",
+    images: [
+      {
+        alt: "Gemini Watermark Remover Online preview",
+        height: 630,
+        url: "/og/og-home.png",
+        width: 1200,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+    images: [
+      {
+        alt: "Gemini Watermark Remover Online preview",
+        url: "/og/og-home.png",
+      },
+    ],
+  },
 }
 
 export default function PrivacyPolicyPage() {

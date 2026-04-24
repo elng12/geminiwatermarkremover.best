@@ -77,7 +77,15 @@ const demoButtons = Array.from(document.querySelectorAll("[data-demo-src]"))
 const missAdvancedButton = document.getElementById("miss-advanced-button")
 const manualAdvancedButton = document.getElementById("manual-advanced-button")
 
-const enginePromise = createWatermarkEngine()
+let enginePromise = null
+
+function getEngine() {
+  if (!enginePromise) {
+    enginePromise = createWatermarkEngine()
+  }
+
+  return enginePromise
+}
 
 const appState = {
   sourceFile: null,
@@ -1138,7 +1146,7 @@ async function runAutoCleanup() {
 
   try {
     const signal = startProcessingSession()
-    const engine = await enginePromise
+    const engine = await getEngine()
     await yieldToMain()
     if (signal.aborted) return
     const { canvas, meta } = await removeWatermarkFromImage(appState.sourceImage, {
@@ -1336,7 +1344,7 @@ async function runAdvancedCleanup() {
     window.__SKIP_GEMINI_BLUR_FALLBACK = true;
     
     // Process pure math reversal (vendor engine natively uses the inverse formula)
-    const engine = await enginePromise
+    const engine = await getEngine()
     const result = await engine.removeWatermarkFromImage(appState.sourceImage)
 
     window.__SKIP_GEMINI_BLUR_FALLBACK = false;
@@ -1565,7 +1573,6 @@ function bindEvents() {
     tab.addEventListener("click", () => setActiveState(tab.dataset.stateTarget))
   })
 
-  heroUploadButton?.addEventListener("click", chooseInputFile)
   demoButtons.forEach((button) => {
     button.addEventListener("click", () => {
       const demoSrc = button.dataset.demoSrc
@@ -1616,6 +1623,13 @@ async function init() {
   setActiveState("empty")
 
   if (typeof window !== "undefined") {
+    window.__geminiRemover = {
+      chooseInputFile,
+      loadDemoImage,
+      processSelectedFile,
+      resetTool,
+      isReady: true,
+    }
     window.__geminiRemoverDebug = {
       getMeta: () => appState.meta,
       getResultMode: () => appState.resultMode,

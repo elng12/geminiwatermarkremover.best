@@ -16,7 +16,7 @@ const exportTargets = [
   {
     outputPath: "index.html",
     useBuiltBody: true,
-    includeLegacyScript: true,
+    includeBootstrapScript: true,
     jsonLd: JSON.stringify(HOME_PAGE_JSONLD),
     cleanupDir: ".",
   },
@@ -34,6 +34,19 @@ const exportTargets = [
     outputPath: "trademark-notice/index.html",
     useBuiltBody: true,
     cleanupDir: "trademark-notice",
+  },
+  {
+    outputPath: "404.html",
+    useBuiltBody: true,
+    title: "Page not found | Gemini Watermark Remover",
+    description: "This Gemini Watermark Remover page could not be found.",
+  },
+  {
+    outputPath: "404/index.html",
+    useBuiltBody: true,
+    cleanupDir: "404",
+    title: "Page not found | Gemini Watermark Remover",
+    description: "This Gemini Watermark Remover page could not be found.",
   },
 ]
 
@@ -78,11 +91,21 @@ function getHtmlAttrs(html) {
 function buildStaticShell({
   bodyHtml,
   builtHtml,
-  includeLegacyScript,
+  includeBootstrapScript,
   jsonLd,
+  title,
+  description,
 }) {
   const htmlAttrs = getHtmlAttrs(builtHtml)
-  const headHtml = getHeadHtml(builtHtml)
+  let headHtml = getHeadHtml(builtHtml)
+
+  if (title && !/<title\b/i.test(headHtml)) {
+    headHtml += `\n<title>${title}</title>`
+  }
+
+  if (description && !/<meta\b[^>]*name="description"/i.test(headHtml)) {
+    headHtml += `\n<meta name="description" content="${description}"/>`
+  }
 
   const trailingScripts = []
 
@@ -92,8 +115,8 @@ function buildStaticShell({
     )
   }
 
-  if (includeLegacyScript) {
-    trailingScripts.push(`<script type="module" src="/legacy/app.js"></script>`)
+  if (includeBootstrapScript) {
+    trailingScripts.push(`<script type="module" src="/legacy/bootstrap.js"></script>`)
   }
 
   const finalBody = [bodyHtml, ...trailingScripts].filter(Boolean).join("\n")
@@ -123,10 +146,16 @@ for (const target of exportTargets) {
   const finalHtml = buildStaticShell({
     bodyHtml,
     builtHtml,
-    includeLegacyScript: target.includeLegacyScript,
+    includeBootstrapScript: target.includeBootstrapScript,
     jsonLd: target.jsonLd,
+    title: target.title,
+    description: target.description,
   })
 
   writeFileSync(join(outDir, target.outputPath), finalHtml)
-  cleanupFlightArtifacts(target.cleanupDir)
+  if (target.cleanupDir) {
+    cleanupFlightArtifacts(target.cleanupDir)
+  }
 }
+
+rmSync(join(outDir, "_not-found"), { recursive: true, force: true })
