@@ -2,11 +2,23 @@ import type { Metadata } from "next"
 import { LegalPageShell } from "../../components/legal-page-shell"
 import siteContent from "../../lib/site-content"
 
-const { CONTACT_EMAIL } = siteContent as { CONTACT_EMAIL: string }
+const { CONTACT_EMAIL, SITE_URL } = siteContent as {
+  CONTACT_EMAIL: string
+  SITE_URL: string
+}
 
-const title = "Terms of Service | Gemini Watermark Remover"
+const title = "Terms of Service"
 const description =
   "Terms of Service for Gemini Watermark Remover. Covers permitted use, visible-mark-only scope, disclaimers, and legal contact details."
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+    { "@type": "ListItem", position: 2, name: "Terms of Service" },
+  ],
+}
 
 export const metadata: Metadata = {
   title,
@@ -17,7 +29,7 @@ export const metadata: Metadata = {
   openGraph: {
     title,
     description,
-    type: "article",
+    type: "website",
     url: "/terms-of-service/",
     images: [
       {
@@ -43,7 +55,12 @@ export const metadata: Metadata = {
 
 export default function TermsOfServicePage() {
   return (
-    <LegalPageShell
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <LegalPageShell
       title="Terms of Service"
       lead="These terms describe how you may use the current version of Gemini Watermark Remover, what the tool is designed to do, and the limits and disclaimers that apply to the service."
       updatedAt="April 17, 2026"
@@ -174,5 +191,6 @@ export default function TermsOfServicePage() {
         </p>
       </section>
     </LegalPageShell>
+    </>
   )
 }

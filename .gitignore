@@ -8,6 +8,7 @@ output/
 .DS_Store
 *.log
 Homepage ! Desktop.png
+preview-homepage.png
 .env
 .env.*
 !.env.example

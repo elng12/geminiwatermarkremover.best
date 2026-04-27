@@ -1403,8 +1403,8 @@ async function processSelectedFile(file, options = {}) {
 }
 
 async function loadDemoImage(
-  demoSrc = "/demo/demo-01-sparkle-before.png",
-  sourceName = "demo-01-sparkle-before.png"
+  demoSrc = "/demo/demo-01-sparkle-before.webp",
+  sourceName = "demo-01-sparkle-before.webp"
 ) {
   try {
     setNote(uploadFeedback, "Loading example image...", "muted")
@@ -1577,7 +1577,7 @@ function bindEvents() {
     button.addEventListener("click", () => {
       const demoSrc = button.dataset.demoSrc
       const sourceName =
-        button.dataset.demoName || demoSrc?.split("/").pop() || "demo-01-sparkle-before.png"
+        button.dataset.demoName || demoSrc?.split("/").pop() || "demo-01-sparkle-before.webp"
 
       if (!demoSrc) return
 

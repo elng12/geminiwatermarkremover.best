@@ -1,6 +1,14 @@
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Page Not Found",
+  description: "The page you requested does not exist.",
+  robots: { index: false, follow: false },
+}
+
 export default function NotFoundPage() {
   return (
-    <main className="legal-shell">
+    <main className="legal-shell" id="main-content">
       <header className="legal-header">
         <div className="legal-topbar">
           <a className="legal-backlink" href="/">

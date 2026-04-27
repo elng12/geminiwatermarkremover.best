@@ -73,7 +73,7 @@ function bindDemoButtons() {
 
       const demoSrc = button.dataset.demoSrc
       const sourceName =
-        button.dataset.demoName || demoSrc?.split("/").pop() || "demo-01-sparkle-before.png"
+        button.dataset.demoName || demoSrc?.split("/").pop() || "demo-01-sparkle-before.webp"
 
       if (!demoSrc) return
 

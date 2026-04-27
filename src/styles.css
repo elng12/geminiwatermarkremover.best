@@ -26,6 +26,54 @@
   display: none !important;
 }
 
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 16px;
+  z-index: 9999;
+  padding: 12px 20px;
+  background: var(--brand-primary);
+  color: #fff;
+  font-weight: 700;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+.skip-link:focus {
+  top: 16px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: var(--page-width);
+  margin: 0 auto;
+  padding: 14px 24px;
+}
+.topbar-brand {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text-main);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.topbar-brand:hover {
+  color: var(--brand-primary);
+}
+.topbar-links {
+  display: flex;
+  gap: 20px;
+}
+.topbar-link {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-decoration: none;
+}
+.topbar-link:hover {
+  color: var(--brand-primary);
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
@@ -945,7 +993,7 @@ button {
 .feature-card h3,
 .step-card h3,
 .info-card h3,
-.footer-brand-copy h2 {
+#footer-brand-title {
   margin: 0;
   font-size: 1.25rem;
 }
@@ -1486,7 +1534,8 @@ button {
   gap: 10px;
 }
 
-.footer-brand-copy h2 {
+.footer-brand-copy #footer-brand-title {
+  display: block;
   font-family: var(--font-sora, "Helvetica Neue", Arial, sans-serif);
   font-size: 1.55rem;
   line-height: 1.1;
@@ -1559,7 +1608,7 @@ button {
 .footer-note {
   max-width: 380px;
   font-size: 0.78rem;
-  color: #64748b;
+  color: #475569;
   line-height: 1.5;
 }
 
@@ -1577,7 +1626,7 @@ button {
 
 .footer-column-title {
   margin: 0;
-  color: #64748b;
+  color: #475569;
   font-size: 0.76rem;
   font-weight: 800;
   letter-spacing: 0.12em;
@@ -1624,7 +1673,7 @@ button {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: #64748b;
+  color: #475569;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -1697,7 +1746,7 @@ button {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  color: #64748b;
+  color: #475569;
   font-size: 0.88rem;
   font-weight: 600;
 }
@@ -1761,7 +1810,7 @@ button {
 }
 
 .legal-footer-copy {
-  color: #64748b;
+  color: #475569;
   font-size: 0.82rem;
 }
 
@@ -2008,7 +2057,7 @@ button {
   .results-mobile-hint {
     display: block;
     margin: -8px auto 0;
-    color: #64748b;
+    color: #475569;
     font-size: 0.74rem;
     font-weight: 700;
     letter-spacing: 0.02em;
@@ -2166,7 +2215,7 @@ button {
     height: 20px;
   }
 
-  .footer-brand-copy h2 {
+  .footer-brand-copy #footer-brand-title {
     font-size: 1.22rem;
   }
 
@@ -2254,8 +2303,19 @@ button {
     width: 100%;
   }
 
-  .action-row,
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px;
+  }
+
   .topbar-links {
+    flex-wrap: wrap;
+    gap: 10px 16px;
+  }
+
+  .action-row {
     width: 100%;
   }
 

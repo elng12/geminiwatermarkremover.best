@@ -23,7 +23,7 @@ export function LegalPageShell({
   updatedAt,
 }: LegalPageShellProps) {
   return (
-    <main className="legal-shell">
+    <main className="legal-shell" id="main-content">
       <header className="legal-header">
         <div className="legal-topbar">
           <a className="legal-backlink" href="/">

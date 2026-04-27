@@ -48,8 +48,8 @@ const demoExamples: DemoExample[] = [
     description: "A clear bottom-right Gemini-style sparkle mark on the original image.",
     height: 404,
     imageLabel: "Visible sparkle cleanup",
-    imageSrc: "/demo/demo-01-sparkle-before.png",
-    sourceName: "demo-01-sparkle-before.png",
+    imageSrc: "/demo/demo-01-sparkle-before.webp",
+    sourceName: "demo-01-sparkle-before.webp",
     title: "Standard corner sparkle",
     width: 576,
   },
@@ -90,16 +90,16 @@ const privacyUseCards = [
 ]
 
 const footerProductItems = [
-  "Gemini Watermark Remover",
-  "Remove Gemini Watermark",
-  "Local browser image tool",
-  "No upload required",
+  { href: "/", label: "Gemini Watermark Remover" },
+  { href: "/#how-title", label: "Remove Gemini Watermark" },
+  { href: "/#trust-title", label: "Local browser image tool" },
+  { href: "/#privacy-use-title", label: "No upload required" },
 ]
 
 const footerHelpLinks = [
-  { href: "#how-title", label: "How it works" },
-  { href: "#faq-title", label: "FAQ" },
-  { href: "#privacy-use-title", label: "Responsible use" },
+  { href: "/how-to-remove-gemini-watermark/", label: "How-to guide" },
+  { href: "/faq/", label: "FAQ" },
+  { href: "/about/", label: "About" },
 ]
 
 const footerLegalLinks = [
@@ -211,7 +211,7 @@ export function HomePageContent() {
         </section>
       </header>
 
-      <main>
+      <main id="main-content">
         <section className="section trust-section" aria-labelledby="trust-title">
           <div className="section-heading section-heading-centered">
             <p className="section-eyebrow">Trust signals</p>
@@ -229,6 +229,39 @@ export function HomePageContent() {
                 <p>{signal.description}</p>
               </article>
             ))}
+          </div>
+        </section>
+
+        <section className="section" aria-labelledby="what-is-title">
+          <div className="section-heading section-heading-centered">
+            <p className="section-eyebrow">Background</p>
+            <h2 id="what-is-title">What is the Gemini watermark?</h2>
+            <p>
+              When Google Gemini generates an image, it often adds a small
+              visible sparkle mark in the bottom-right corner. This watermark
+              indicates that the image was created by Google&apos;s AI. It is
+              separate from SynthID, Google&apos;s invisible watermarking system
+              that embeds a hidden signal in the pixel data. The visible
+              sparkle watermark can interfere with design workflows,
+              presentations, or prototyping where a clean corner is needed.
+            </p>
+          </div>
+        </section>
+
+        <section className="section" aria-labelledby="why-browser-title">
+          <div className="section-heading section-heading-centered">
+            <p className="section-eyebrow">Why browser-based?</p>
+            <h2 id="why-browser-title">Why use a browser-based Gemini watermark remover?</h2>
+            <p>
+              Unlike server-side tools that require uploading your image to a
+              remote server, Gemini Watermark Remover processes everything
+              locally in your browser. Your image never leaves your device &mdash;
+              no upload, no server-side AI model, no account required. This
+              means faster processing, full privacy, and no risk of your images
+              being stored on a third-party server. It works on any modern
+              browser, including mobile, without installing software or
+              extensions.
+            </p>
           </div>
         </section>
 
@@ -478,6 +511,7 @@ export function HomePageContent() {
                     >
                       Try Advanced Engine
                     </button>
+                    <p className="status-note">Advanced Engine uses a deeper cleanup pass — still runs locally in your browser.</p>
                   </div>
                   <p
                     id="miss-message"
@@ -552,6 +586,7 @@ export function HomePageContent() {
                     >
                       Advanced Engine
                     </button>
+                    <p className="status-note">Deeper cleanup pass — still local, no upload.</p>
                   </div>
                   <span className="state-meta state-meta-brand">
                     Gemini Watermark Remover runs locally
@@ -740,7 +775,7 @@ export function HomePageContent() {
                 </svg>
               </span>
               <div className="footer-brand-copy">
-                <h2 id="footer-brand-title">Gemini Watermark Remover</h2>
+                <strong id="footer-brand-title">Gemini Watermark Remover</strong>
                 <p>
                   A browser-only tool to remove Gemini watermark overlays and
                   similar small corner marks. Upload, review, and download only
@@ -771,8 +806,10 @@ export function HomePageContent() {
               </p>
               <ul className="footer-list">
                 {footerProductItems.map((item) => (
-                  <li key={item} className="footer-item">
-                    {item}
+                  <li key={item.label}>
+                    <a className="footer-item footer-link" href={item.href}>
+                      {item.label}
+                    </a>
                   </li>
                 ))}
               </ul>
@@ -835,7 +872,7 @@ export function HomePageContent() {
                 />
               </svg>
             </span>
-            <span>English</span>
+            <span lang="en">English</span>
           </p>
         </div>
       </footer>

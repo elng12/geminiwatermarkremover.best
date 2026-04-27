@@ -2,11 +2,23 @@ import type { Metadata } from "next"
 import { LegalPageShell } from "../../components/legal-page-shell"
 import siteContent from "../../lib/site-content"
 
-const { CONTACT_EMAIL } = siteContent as { CONTACT_EMAIL: string }
+const { CONTACT_EMAIL, SITE_URL } = siteContent as {
+  CONTACT_EMAIL: string
+  SITE_URL: string
+}
 
-const title = "Privacy Policy | Gemini Watermark Remover"
+const title = "Privacy Policy"
 const description =
   "Privacy Policy for Gemini Watermark Remover. Explains browser-only processing, no image upload, temporary local state, and privacy contact details."
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+    { "@type": "ListItem", position: 2, name: "Privacy Policy" },
+  ],
+}
 
 export const metadata: Metadata = {
   title,
@@ -17,7 +29,7 @@ export const metadata: Metadata = {
   openGraph: {
     title,
     description,
-    type: "article",
+    type: "website",
     url: "/privacy-policy/",
     images: [
       {
@@ -43,7 +55,12 @@ export const metadata: Metadata = {
 
 export default function PrivacyPolicyPage() {
   return (
-    <LegalPageShell
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <LegalPageShell
       title="Privacy Policy"
       lead="This page explains what the current version of Gemini Watermark Remover does with your data, what stays inside your browser, and what limited technical information may still be received when the site itself loads."
       updatedAt="April 19, 2026"
@@ -75,7 +92,9 @@ export default function PrivacyPolicyPage() {
         <ul className="legal-list">
           <li>
             <strong>No image upload:</strong> the site does not send your
-            selected image to a cleanup API in v1.
+            selected image to a cleanup API. This applies to both the basic
+            cleanup and the Advanced Engine pass — all processing stays on your
+            device.
           </li>
           <li>
             <strong>No account requirement:</strong> the core tool works
@@ -188,5 +207,6 @@ export default function PrivacyPolicyPage() {
         </p>
       </section>
     </LegalPageShell>
+    </>
   )
 }

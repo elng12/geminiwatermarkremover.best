@@ -2,11 +2,23 @@ import type { Metadata } from "next"
 import { LegalPageShell } from "../../components/legal-page-shell"
 import siteContent from "../../lib/site-content"
 
-const { CONTACT_EMAIL } = siteContent as { CONTACT_EMAIL: string }
+const { CONTACT_EMAIL, SITE_URL } = siteContent as {
+  CONTACT_EMAIL: string
+  SITE_URL: string
+}
 
-const title = "Trademark Notice | Gemini Watermark Remover"
+const title = "Trademark Notice"
 const description =
   "Trademark Notice for Gemini Watermark Remover. Explains non-affiliation, descriptive product references, and contact details for trademark-related notices."
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+    { "@type": "ListItem", position: 2, name: "Trademark Notice" },
+  ],
+}
 
 export const metadata: Metadata = {
   title,
@@ -17,7 +29,7 @@ export const metadata: Metadata = {
   openGraph: {
     title,
     description,
-    type: "article",
+    type: "website",
     url: "/trademark-notice/",
     images: [
       {
@@ -43,7 +55,12 @@ export const metadata: Metadata = {
 
 export default function TrademarkNoticePage() {
   return (
-    <LegalPageShell
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <LegalPageShell
       title="Trademark Notice"
       lead="This page explains how trademarked product names are referenced on this site and clarifies that Gemini Watermark Remover is an independent tool website, not an official Google property."
       updatedAt="April 17, 2026"
@@ -110,5 +127,6 @@ export default function TrademarkNoticePage() {
         </p>
       </section>
     </LegalPageShell>
+    </>
   )
 }

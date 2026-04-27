@@ -11,8 +11,8 @@ const outputDir = join(rootDir, "output", "playwright")
 const downloadDir = join(outputDir, "downloads")
 const autoUploadCandidates = [
   {
-    expectedExtension: ".png",
-    filePath: join(rootDir, "public", "demo", "demo-01-sparkle-before.png"),
+    expectedExtension: ".webp",
+    filePath: join(rootDir, "public", "demo", "demo-01-sparkle-before.webp"),
     label: "standard demo image",
   },
   {
