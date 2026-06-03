@@ -217,7 +217,7 @@ export function HomePageContent() {
             <p className="section-eyebrow">Trust signals</p>
             <h2 id="trust-title">Free, private, and ready in your browser</h2>
             <p>
-              The core promise stays simple: upload an image, clean the visible
+              The core promise stays simple: upload a Gemini image, clean the visible
               mark locally, and review the result before you download.
             </p>
           </div>
@@ -275,7 +275,7 @@ export function HomePageContent() {
               Start with a verified demo before you upload
             </h2>
             <p>
-              These two real examples show how the browser-only cleanup handles
+              These two real Gemini examples show how the browser-only cleanup handles
               a standard visible sparkle and a lightly compressed variant of the
               same mark.
             </p>
@@ -328,10 +328,10 @@ export function HomePageContent() {
                   <span className="state-brand">
                     Gemini Watermark Remover
                   </span>
-                  <h3>Preparing your Gemini watermark preview</h3>
+                  <h3>Preparing your Gemini cleanup preview</h3>
                   <p>
                     The tool is checking the image and preparing a first removal
-                    pass for the Gemini watermark. Keep this tab open while the
+                    pass for the Gemini mark. Keep this tab open while the
                     preview is generated.
                   </p>
                 </div>
@@ -348,12 +348,12 @@ export function HomePageContent() {
                 </div>
 
                 <div className="status-panel">
-                  <h4>Checking the Gemini watermark area</h4>
+                  <h4>Checking the Gemini mark area</h4>
                   <div className="progress-track" aria-hidden="true">
                     <span className="progress-fill"></span>
                   </div>
                   <p>
-                    If the Gemini watermark is missed, you can switch to manual
+                    If the Gemini mark is missed, you can switch to manual
                     mode after this step.
                   </p>
                   <p className="status-note">
@@ -367,7 +367,7 @@ export function HomePageContent() {
                     aria-live="polite"
                     aria-atomic="true"
                   >
-                    First Gemini watermark pass is running.
+                    First Gemini cleanup pass is running.
                   </p>
                 </div>
               </div>
