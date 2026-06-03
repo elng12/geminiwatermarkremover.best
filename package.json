@@ -2,6 +2,12 @@
   "name": "geminiwatermarkremover.best",
   "version": "1.0.0",
   "private": true,
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "overrides": {
+    "postcss": "^8.5.10"
+  },
   "scripts": {
     "predev": "node scripts/sync-legacy-runtime.mjs",
     "prebuild": "node scripts/sync-legacy-runtime.mjs",

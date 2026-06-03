@@ -30,11 +30,25 @@ export const metadata: Metadata = {
     description,
     type: "website",
     url: "/about/",
+    images: [
+      {
+        alt: "Gemini Watermark Remover Online preview",
+        height: 630,
+        url: "/og/og-home.png",
+        width: 1200,
+      },
+    ],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title,
     description,
+    images: [
+      {
+        alt: "Gemini Watermark Remover Online preview",
+        url: "/og/og-home.png",
+      },
+    ],
   },
 }
 

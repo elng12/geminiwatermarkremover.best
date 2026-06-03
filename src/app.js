@@ -818,7 +818,8 @@ async function finalizeSuccess(canvas, meta, mode) {
   )
   updateDownloadUi(mode)
   downloadButton.disabled = false
-  setActiveState("success")
+  setActiveState("success", { scroll: true })
+  requestAnimationFrame(() => downloadButton?.focus())
 }
 
 function getDefaultManualSelection() {

@@ -56,6 +56,7 @@ export default function RootLayout({
           <a className="topbar-brand" href="/">Gemini Watermark Remover</a>
           <div className="topbar-links">
             <a className="topbar-link" href="/#how-title">How it works</a>
+            <a className="topbar-link" href="/how-to-remove-gemini-watermark/">Guide</a>
             <a className="topbar-link" href="/faq/">FAQ</a>
             <a className="topbar-link" href="/about/">About</a>
           </div>

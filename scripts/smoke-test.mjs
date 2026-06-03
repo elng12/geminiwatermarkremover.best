@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from "node:fs"
+import { existsSync, readdirSync, readFileSync } from "node:fs"
 import { join } from "node:path"
 
 const rootDir = process.cwd()
@@ -24,7 +24,22 @@ function expectExcludes(text, snippet, message) {
   assert(!text.includes(snippet), message)
 }
 
+function assertNoFlightArtifacts(relativeDir) {
+  const dirPath = join(outDir, relativeDir)
+  const leftovers = readdirSync(dirPath).filter(
+    (entry) => entry.startsWith("__next") || entry.endsWith(".txt")
+  )
+
+  assert(
+    leftovers.length === 0,
+    `${relativeDir} still contains Next export artifact files: ${leftovers.join(", ")}`
+  )
+}
+
 const homeHtml = readOutput("index.html")
+const aboutHtml = readOutput("about/index.html")
+const faqHtml = readOutput("faq/index.html")
+const guideHtml = readOutput("how-to-remove-gemini-watermark/index.html")
 const privacyHtml = readOutput("privacy-policy/index.html")
 const termsHtml = readOutput("terms-of-service/index.html")
 const trademarkHtml = readOutput("trademark-notice/index.html")
@@ -72,26 +87,26 @@ expectExcludes(
   'as="script"',
   "Homepage still contains leftover Next script preload tags."
 )
-expectExcludes(
-  privacyHtml,
-  "self.__next_f.push",
-  "Privacy policy page still contains Next flight payload data."
-)
-expectExcludes(
-  termsHtml,
-  "self.__next_f.push",
-  "Terms page still contains Next flight payload data."
-)
-expectExcludes(
-  trademarkHtml,
-  "self.__next_f.push",
-  "Trademark notice page still contains Next flight payload data."
-)
+for (const [label, html] of [
+  ["About page", aboutHtml],
+  ["FAQ page", faqHtml],
+  ["How-to page", guideHtml],
+  ["Privacy policy page", privacyHtml],
+  ["Terms page", termsHtml],
+  ["Trademark notice page", trademarkHtml],
+]) {
+  expectExcludes(html, "self.__next_f.push", `${label} still contains Next flight payload data.`)
+  expectExcludes(html, 'as="script"', `${label} still contains leftover Next script preload tags.`)
+  expectExcludes(html, "next-size-adjust", `${label} still contains Next size-adjust metadata.`)
+}
 expectExcludes(
   notFoundHtml,
   "self.__next_f.push",
   "404 page still contains Next flight payload data."
 )
+for (const routeDir of ["about", "faq", "how-to-remove-gemini-watermark"]) {
+  assertNoFlightArtifacts(routeDir)
+}
 assert(
   !existsSync(join(outDir, "_not-found")),
   "Static export should not expose the internal _not-found route."

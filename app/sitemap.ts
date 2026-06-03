@@ -1,10 +1,10 @@
 import type { MetadataRoute } from "next"
 import { siteUrl } from "../lib/site-config"
 
-const homeLastModified = new Date("2026-04-26T00:00:00.000Z")
-const guideLastModified = new Date("2026-04-26T00:00:00.000Z")
-const aboutLastModified = new Date("2026-04-26T00:00:00.000Z")
-const faqLastModified = new Date("2026-04-26T00:00:00.000Z")
+const homeLastModified = new Date("2026-06-03T00:00:00.000Z")
+const guideLastModified = new Date("2026-06-03T00:00:00.000Z")
+const aboutLastModified = new Date("2026-06-03T00:00:00.000Z")
+const faqLastModified = new Date("2026-06-03T00:00:00.000Z")
 const privacyLastModified = new Date("2026-04-19T00:00:00.000Z")
 const legalLastModified = new Date("2026-04-17T00:00:00.000Z")
 

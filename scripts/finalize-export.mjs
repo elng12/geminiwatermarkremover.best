@@ -21,6 +21,21 @@ const exportTargets = [
     cleanupDir: ".",
   },
   {
+    outputPath: "about/index.html",
+    useBuiltBody: true,
+    cleanupDir: "about",
+  },
+  {
+    outputPath: "faq/index.html",
+    useBuiltBody: true,
+    cleanupDir: "faq",
+  },
+  {
+    outputPath: "how-to-remove-gemini-watermark/index.html",
+    useBuiltBody: true,
+    cleanupDir: "how-to-remove-gemini-watermark",
+  },
+  {
     outputPath: "privacy-policy/index.html",
     useBuiltBody: true,
     cleanupDir: "privacy-policy",

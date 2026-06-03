@@ -1,22 +1,6 @@
-const DEFAULT_SITE_URL = "https://geminiwatermarkremover.best"
+import siteContent from "./site-content"
 
-function normalizeSiteUrl(value: string | undefined) {
-  if (!value) return DEFAULT_SITE_URL
+const { SITE_URL } = siteContent as { SITE_URL: string }
 
-  const trimmed = value.trim()
-  if (!trimmed) return DEFAULT_SITE_URL
-
-  const candidate = /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`
-
-  try {
-    return new URL(candidate).origin
-  } catch {
-    return DEFAULT_SITE_URL
-  }
-}
-
-export const siteUrl = normalizeSiteUrl(
-  process.env.NEXT_PUBLIC_SITE_URL || process.env.SITE_URL
-)
-
+export const siteUrl = SITE_URL
 export const siteMetadataBase = new URL(siteUrl)

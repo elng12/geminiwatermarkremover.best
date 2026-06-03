@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import siteContent from "../../lib/site-content"
 
 const { SITE_URL } = siteContent as { SITE_URL: string }
+const guideUrl = `${SITE_URL}/how-to-remove-gemini-watermark/`
 
 const title = "How to Remove the Gemini Watermark from Your Images"
 const description =
@@ -29,28 +30,28 @@ const howtoJsonLd = {
       position: 1,
       name: "Open the tool and upload your image",
       text: "Go to GeminiWatermarkRemover.best and upload a JPG, PNG, or WebP file that contains a visible Gemini sparkle watermark, or try one of the built-in example images first.",
-      url: `${SITE_URL}/#top`,
+      url: `${guideUrl}#step-1`,
     },
     {
       "@type": "HowToStep",
       position: 2,
       name: "Let the tool detect and remove the watermark automatically",
       text: "The tool checks the usual bottom-right corner for the Gemini watermark and applies a local cleanup pass. Everything runs in your browser — your image is not uploaded to any server.",
-      url: `${SITE_URL}/#how-title`,
+      url: `${guideUrl}#step-2`,
     },
     {
       "@type": "HowToStep",
       position: 3,
       name: "Review the before-and-after comparison",
       text: "Use the comparison slider to check the result. If the auto-detect missed the mark or left residue, switch to manual mode to draw a tighter box around the watermark area.",
-      url: `${SITE_URL}/#how-title`,
+      url: `${guideUrl}#step-3`,
     },
     {
       "@type": "HowToStep",
       position: 4,
       name: "Download the cleaned image",
       text: "Once the result looks clean, click Download to save the image. JPG and WebP exports may change compression, so keep your original file if you need a lossless source copy.",
-      url: `${SITE_URL}/#how-title`,
+      url: `${guideUrl}#step-4`,
     },
   ],
 }
@@ -134,7 +135,7 @@ export default function HowToRemovePage() {
             </p>
           </section>
 
-          <section className="legal-section">
+          <section className="legal-section" id="step-1">
             <h2>Step 1: Open the tool and upload your image</h2>
             <p>
               Go to{" "}
@@ -152,7 +153,7 @@ export default function HowToRemovePage() {
             </p>
           </section>
 
-          <section className="legal-section">
+          <section className="legal-section" id="step-2">
             <h2>Step 2: Let the tool detect and remove the watermark</h2>
             <p>
               After uploading, the tool automatically checks the usual
@@ -168,7 +169,7 @@ export default function HowToRemovePage() {
             </p>
           </section>
 
-          <section className="legal-section">
+          <section className="legal-section" id="step-3">
             <h2>Step 3: Review the before-and-after comparison</h2>
             <p>
               Once the cleanup is complete, you can use the comparison slider to
@@ -184,7 +185,7 @@ export default function HowToRemovePage() {
             </p>
           </section>
 
-          <section className="legal-section">
+          <section className="legal-section" id="step-4">
             <h2>Step 4: Download the cleaned image</h2>
             <p>
               When the result looks clean, click the Download button to save the
